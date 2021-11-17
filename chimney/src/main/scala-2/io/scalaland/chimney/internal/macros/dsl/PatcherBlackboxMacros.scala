@@ -4,6 +4,8 @@ import io.scalaland.chimney.Patcher
 import io.scalaland.chimney.internal.macros.{PatcherMacros, TransformerMacros}
 import io.scalaland.chimney.internal.utils.{DerivationGuards, EitherUtils, MacroUtils}
 
+import javax.sound.midi.Patch
+import scala.language.experimental.macros
 import scala.reflect.macros.blackbox
 
 class PatcherBlackboxMacros(val c: blackbox.Context)
