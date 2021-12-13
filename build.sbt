@@ -1,20 +1,12 @@
 import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
 val versions = new {
-  val scala212 = "2.12.12"
-  val scala213 = "2.13.5"
+  val scala212 = "2.12.15"
+  val scala213 = "2.13.7"
 }
 
-val scala3Version = "3.0.1"
+val scala3Version = "3.1.0"
 
-
-val kindProjectorSettings =
-  Def.setting {
-    CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, 12 | 13)) => Seq(addCompilerPlugin("org.typelevel" % "kind-projector" % "0.11.3" cross CrossVersion.full))
-      case _ => Seq.empty
-    }
-  }
 
 val settings =
   Seq(
@@ -44,15 +36,14 @@ val settings =
 //      "-Xlint:type-parameter-shadow",
 //      "-Ywarn-unused:locals",
 //      "-Ywarn-macros:after",
-      "-Xfatal-warnings",
+//      "-Xfatal-warnings",
       "-language:higherKinds"
     ),
-    scalacOptions ++= (
-      if (scalaVersion.value >= "2.13")
-        Seq.empty // Seq("-Wunused:patvars")
-      else
-        Seq(
+    scalacOptions ++=
+      (CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some((2, 12)) => Seq(
           "-Xfuture",
+          "-Xsource:3",
           "-Xexperimental",
           "-Yno-adapted-args",
           "-Ywarn-inaccessible",
@@ -63,7 +54,15 @@ val settings =
           "-Xlint:unsound-match",
           "-Xlint:nullary-override"
         )
-      ),
+        case Some((2, 13)) => Seq(
+          "-Xsource:3",
+        )
+        case Some((3, _)) => Seq(
+          "-Ykind-projector",
+          "-Xmax-inlines", "64"
+        )
+        case _ => Seq.empty
+      }),
     Compile / console / scalacOptions --= Seq("-Ywarn-unused:imports", "-Xfatal-warnings"),
     Compile / crossPaths := true
   )
@@ -92,7 +91,7 @@ val dependencies = Seq(
     ) ++
     (CrossVersion.partialVersion(scalaVersion.value) match {
       case Some((2, 12 | 13)) => Seq(
-        compilerPlugin("org.typelevel" % "kind-projector" % "0.11.3" cross CrossVersion.full),
+        compilerPlugin("org.typelevel" % "kind-projector" % "0.13.2" cross CrossVersion.full),
         "org.scala-lang" % "scala-reflect" % scalaVersion.value % "provided"
       )
       case _ => Seq.empty
@@ -138,7 +137,7 @@ lazy val chimneyCats = crossProject(JSPlatform, JVMPlatform)
     name := "chimney-cats",
     description := "Chimney module for validated transformers support",
     testFrameworks += new TestFramework("utest.runner.Framework"),
-    addCompilerPlugin("org.typelevel" % "kind-projector" % "0.11.3" cross CrossVersion.full)
+    addCompilerPlugin("org.typelevel" % "kind-projector" % "0.13.2" cross CrossVersion.full)
   )
   .settings(settings)
   .settings(publishSettings)
