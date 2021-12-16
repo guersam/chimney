@@ -1,8 +1,6 @@
 package io.scalaland.chimney.dsl
 
-import io.scalaland.chimney.{TransformerF, TransformerFSupport}
 import io.scalaland.chimney.internal._
-import io.scalaland.chimney.internal.macros.dsl.{TransformerBlackboxMacros, TransformerFDefinitionWhiteboxMacros}
 
 import scala.language.experimental.macros
 
@@ -16,7 +14,7 @@ import scala.language.experimental.macros
 final class TransformerFDefinition[F[+_], From, To, C <: TransformerCfg, Flags <: TransformerFlags](
     val overrides: Map[String, Any],
     val instances: Map[(String, String), Any]
-) extends FlagsDsl[Lambda[`F1 <: TransformerFlags` => TransformerFDefinition[F, From, To, C, F1]], Flags]
+) extends FlagsDsl[({ type λ[F1 <: TransformerFlags] = TransformerFDefinition[F, From, To, C, F1] })#λ, Flags]
      with ScalaVersionSpecificTransformerFDefinition[F, From, To, C, Flags] {
 
   /** Used internally by macro. Please don't use in your code.

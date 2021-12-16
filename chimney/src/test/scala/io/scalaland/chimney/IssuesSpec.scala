@@ -246,7 +246,7 @@ object IssuesSpec extends TestSuite {
       case class Strings(elems: Set[String])
       case class Lengths(elems: Seq[Int])
 
-      implicit def lengthTranformer = new Transformer[String, Int] {
+      implicit def lengthTranformer: Transformer[String, Int] = new Transformer[String, Int] {
         override def transform(string: String): Int = string.length
       }
 
@@ -330,9 +330,9 @@ object IssuesSpec extends TestSuite {
 
       "objects case" - {
         sealed trait Version1
-        final case object Instance1 extends Version1
+        case object Instance1 extends Version1
         sealed trait Version2
-        final case object Instance2 extends Version2
+        case object Instance2 extends Version2
 
         val v1: Version1 = Instance1
         val v2: Version2 = v1

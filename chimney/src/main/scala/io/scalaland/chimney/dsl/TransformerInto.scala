@@ -15,7 +15,7 @@ import io.scalaland.chimney.internal._
 final class TransformerInto[From, To, C <: TransformerCfg, Flags <: TransformerFlags](
     val source: From,
     val td: TransformerDefinition[From, To, C, Flags]
-) extends FlagsDsl[Lambda[`F1 <: TransformerFlags` => TransformerInto[From, To, C, F1]], Flags]
+) extends FlagsDsl[({ type λ[F1 <: TransformerFlags] = TransformerInto[From, To, C, F1] })#λ, Flags]
      with ScalaVersionSpecificTransformerInto[From, To, C, Flags] {
 
   /** Lifts current transformation with provided type constructor `F`.

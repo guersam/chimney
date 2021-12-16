@@ -59,7 +59,6 @@ val settings =
         )
         case Some((3, _)) => Seq(
           "-Ykind-projector",
-          "-Ykind-projector:underscores",
           "-Xmax-inlines", "64"
         )
         case _ => Seq.empty
@@ -143,7 +142,7 @@ lazy val chimneyCats = crossProject(JSPlatform, JVMPlatform)
   .settings(settings)
   .settings(publishSettings)
   .settings(dependencies: _*)
-  .settings(libraryDependencies += "org.typelevel" %%% "cats-core" % "2.4.2" % "provided")
+  .settings(libraryDependencies += "org.typelevel" %%% "cats-core" % "2.6.1" % "provided")
 
 lazy val chimneyCatsJVM = chimneyCats.jvm
 lazy val chimneyCatsJS = chimneyCats.js

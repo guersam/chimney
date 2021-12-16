@@ -3,7 +3,6 @@ package io.scalaland.chimney.dsl
 import io.scalaland.chimney.internal.TransformerCfg._
 import io.scalaland.chimney.internal._
 
-import scala.language.experimental.macros
 
 /** Allows customization of [[io.scalaland.chimney.Transformer]] derivation
   *
@@ -14,7 +13,7 @@ import scala.language.experimental.macros
 final class TransformerDefinition[From, To, C <: TransformerCfg, Flags <: TransformerFlags](
     val overrides: Map[String, Any],
     val instances: Map[(String, String), Any]
-) extends FlagsDsl[Lambda[`F1 <: TransformerFlags` => TransformerDefinition[From, To, C, F1]], Flags]
+) extends FlagsDsl[({ type λ[F1 <: TransformerFlags] = TransformerDefinition[From, To, C, F1] })#λ, Flags]
   with ScalaVersionSpecificTransformerDefinition[From, To, C, Flags] {
 
   /** Lifts current transformer definition with provided type constructor `F`.

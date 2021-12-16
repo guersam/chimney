@@ -5,7 +5,7 @@ import io.scalaland.chimney.internal.{TransformerCfg, TransformerFlags}
 final class TransformerFInto[F[+_], From, To, C <: TransformerCfg, Flags <: TransformerFlags](
     val source: From,
     val td: TransformerFDefinition[F, From, To, C, Flags]
-) extends FlagsDsl[Lambda[`F1 <: TransformerFlags` => TransformerFInto[F, From, To, C, F1]], Flags]
+) extends FlagsDsl[({ type λ[F1 <: TransformerFlags] = TransformerFInto[F, From, To, C, F1] })#λ, Flags]
      with ScalaVersionSpecificTransformerFInto[F, From, To, C, Flags] {
 
   /** Used internally by macro. Please don't use in your code.

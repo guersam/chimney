@@ -244,7 +244,7 @@ object DslSpec extends TestSuite {
 
         "local transformer for default value exists" - {
 
-          implicit val localTransformer: Transformer[Long, Foo] = { l: Long =>
+          implicit val localTransformer: Transformer[Long, Foo] = { (l: Long) =>
             Foo(l.toInt * 10)
           }
 
@@ -253,7 +253,7 @@ object DslSpec extends TestSuite {
 
         "local transformer for the whole entity exists" - {
 
-          implicit val fooBarTransformer: Transformer[Foo, Bar] = { foo: Foo =>
+          implicit val fooBarTransformer: Transformer[Foo, Bar] = { (foo: Foo) =>
             Bar(foo.x, 333L)
           }
 

@@ -33,10 +33,10 @@ package numbers {
     ): TransformerF[F, short.NumScale[A, Nothing], long.NumScale[B]] = {
       Transformer
         .defineF[F, short.NumScale[A, Nothing], long.NumScale[B]]
-        .withCoproductInstanceF { billion: short.Billion[A] =>
+        .withCoproductInstanceF { billion: (short.Billion[A]) =>
           billion.transformIntoF[F, long.Milliard[B]]
         }
-        .withCoproductInstanceF { trillion: short.Trillion[A] =>
+        .withCoproductInstanceF { trillion: (short.Trillion[A]) =>
           trillion.transformIntoF[F, long.Billion[B]]
         }
         .buildTransformer
@@ -47,10 +47,10 @@ package numbers {
     ): TransformerF[F, short.NumScale[A, Nothing], long.NumScale[B]] = {
       Transformer
         .defineF[F, short.NumScale[A, Nothing], long.NumScale[B]]
-        .withCoproductInstanceF { billion: short.Billion[A] =>
+        .withCoproductInstanceF { (billion: short.Billion[A]) =>
           billion.transformIntoF[F, long.Milliard[B]]
         }
-        .withCoproductInstanceF { trillion: short.Trillion[A] =>
+        .withCoproductInstanceF { (trillion: short.Trillion[A]) =>
           trillion.transformIntoF[F, long.Billion[B]]
         }
         .buildTransformer
