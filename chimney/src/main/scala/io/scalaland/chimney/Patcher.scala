@@ -9,4 +9,4 @@ trait Patcher[T, Patch] {
   def patch(obj: T, patch: Patch): T
 }
 
-object Patcher extends PatcherPlatformSpecific
+object Patcher extends ScalaVersionSpecificPatcher

@@ -5,8 +5,7 @@ import io.scalaland.chimney.internal.{TransformerCfg, TransformerFlags}
 
 import scala.language.experimental.macros
 
-trait TransformerIntoPlatformSpecific[From, To, C <: TransformerCfg, Flags <: TransformerFlags] {
-  this: TransformerInto[From, To, C, Flags] =>
+private[dsl] trait ScalaVersionSpecificTransformerInto[From, To, C <: TransformerCfg, Flags <: TransformerFlags] {
 
   /** Use `value` provided here for field picked using `selector`.
    *
@@ -16,7 +15,7 @@ trait TransformerIntoPlatformSpecific[From, To, C <: TransformerCfg, Flags <: Tr
    * @return [[io.scalaland.chimney.dsl.TransformerInto]]
    */
   def withFieldConst[T, U](selector: To => T, value: U): TransformerInto[From, To, _ <: TransformerCfg, Flags] =
-  macro TransformerIntoWhiteboxMacros.withFieldConstImpl
+    macro TransformerIntoWhiteboxMacros.withFieldConstImpl
 
   /** Use wrapped `value` provided here for field picked using `selector`.
    *
@@ -31,7 +30,7 @@ trait TransformerIntoPlatformSpecific[From, To, C <: TransformerCfg, Flags <: Tr
                                     selector: To => T,
                                     value: F[U]
                                   ): TransformerFInto[F, From, To, _ <: TransformerCfg, Flags] =
-  macro TransformerIntoWhiteboxMacros.withFieldConstFImpl[F]
+    macro TransformerIntoWhiteboxMacros.withFieldConstFImpl[F]
 
   /** Use `map` provided here to compute value of field picked using `selector`.
    *
@@ -46,7 +45,7 @@ trait TransformerIntoPlatformSpecific[From, To, C <: TransformerCfg, Flags <: Tr
                                selector: To => T,
                                map: From => U
                              ): TransformerInto[From, To, _ <: TransformerCfg, Flags] =
-  macro TransformerIntoWhiteboxMacros.withFieldComputedImpl
+    macro TransformerIntoWhiteboxMacros.withFieldComputedImpl
 
   /** Use `map` provided here to compute wrapped value of field picked using `selector`.
    *
@@ -61,7 +60,7 @@ trait TransformerIntoPlatformSpecific[From, To, C <: TransformerCfg, Flags <: Tr
                                        selector: To => T,
                                        map: From => F[U]
                                      ): TransformerFInto[F, From, To, _ <: TransformerCfg, Flags] =
-  macro TransformerIntoWhiteboxMacros.withFieldComputedFImpl[F]
+    macro TransformerIntoWhiteboxMacros.withFieldComputedFImpl[F]
 
   /** Use `selectorFrom` field in `From` to obtain the value of `selectorTo` field in `To`
    *
@@ -76,7 +75,7 @@ trait TransformerIntoPlatformSpecific[From, To, C <: TransformerCfg, Flags <: Tr
                               selectorFrom: From => T,
                               selectorTo: To => U
                             ): TransformerInto[From, To, _ <: TransformerCfg, Flags] =
-  macro TransformerIntoWhiteboxMacros.withFieldRenamedImpl
+    macro TransformerIntoWhiteboxMacros.withFieldRenamedImpl
 
   /** Use `f` to calculate the (missing) coproduct instance when mapping one coproduct into another
    *
@@ -90,7 +89,7 @@ trait TransformerIntoPlatformSpecific[From, To, C <: TransformerCfg, Flags <: Tr
    * @return [[io.scalaland.chimney.dsl.TransformerInto]]
    */
   def withCoproductInstance[Inst](f: Inst => To): TransformerInto[From, To, _ <: TransformerCfg, Flags] =
-  macro TransformerIntoWhiteboxMacros.withCoproductInstanceImpl
+    macro TransformerIntoWhiteboxMacros.withCoproductInstanceImpl
 
   /** Use `f` to calculate the (missing) wrapped coproduct instance when mapping one coproduct into another
    *
@@ -104,7 +103,7 @@ trait TransformerIntoPlatformSpecific[From, To, C <: TransformerCfg, Flags <: Tr
    * @return [[io.scalaland.chimney.dsl.TransformerFInto]]
    */
   def withCoproductInstanceF[F[+_], Inst](f: Inst => F[To]): TransformerFInto[F, From, To, _ <: TransformerCfg, Flags] =
-  macro TransformerIntoWhiteboxMacros.withCoproductInstanceFImpl[F]
+    macro TransformerIntoWhiteboxMacros.withCoproductInstanceFImpl[F]
 
   /** Apply configured transformation in-place.
    *
@@ -117,5 +116,5 @@ trait TransformerIntoPlatformSpecific[From, To, C <: TransformerCfg, Flags <: Tr
   def transform[ScopeFlags <: TransformerFlags](
                                                  implicit tc: io.scalaland.chimney.dsl.TransformerConfiguration[ScopeFlags]
                                                ): To =
-  macro TransformerBlackboxMacros.transformImpl[From, To, C, Flags, ScopeFlags]
+    macro TransformerBlackboxMacros.transformImpl[From, To, C, Flags, ScopeFlags]
 }

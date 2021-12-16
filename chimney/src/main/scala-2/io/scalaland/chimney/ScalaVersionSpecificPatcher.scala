@@ -4,7 +4,7 @@ import io.scalaland.chimney.internal.macros.dsl.PatcherBlackboxMacros
 
 import scala.language.experimental.macros
 
-trait PatcherPlatformSpecific {
+private[chimney] trait ScalaVersionSpecificPatcher {
 
   /** Provides implicit [[io.scalaland.chimney.Patcher]] instance
    * for arbitrary types.

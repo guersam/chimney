@@ -23,19 +23,7 @@ trait TransformerF[F[+_], From, To] {
   def transform(src: From): F[To]
 }
 
-object TransformerF {
-
-  /** Provides [[io.scalaland.chimney.TransformerF]] derived with the default settings.
-    *
-    * When transformation can't be derived, it results with compilation error.
-    *
-    * @tparam F    wrapper type constructor
-    * @tparam From type of input value
-    * @tparam To   type of output value
-    * @return [[io.scalaland.chimney.TransformerF]] type class definition
-    */
-  implicit def derive[F[+_], From, To](implicit tfs: TransformerFSupport[F]): TransformerF[F, From, To] =
-    macro TransformerBlackboxMacros.deriveTransformerFImpl[F, From, To]
+object TransformerF extends ScalaVersionSpecificTransformerF {
 
   /** Creates an empty [[io.scalaland.chimney.dsl.TransformerFDefinition]] that
     * you can customize to derive [[io.scalaland.chimney.TransformerF]].

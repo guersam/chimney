@@ -2,9 +2,6 @@ package io.scalaland.chimney.dsl
 
 import io.scalaland.chimney.internal.PatcherCfg
 import io.scalaland.chimney.internal.PatcherCfg.{IgnoreNoneInPatch, IgnoreRedundantPatcherFields}
-import io.scalaland.chimney.internal.macros.dsl.PatcherBlackboxMacros
-
-import scala.language.experimental.macros
 
 /** Provides operations to customize patcher logic for specific
   * object value and patch value.
@@ -15,7 +12,7 @@ import scala.language.experimental.macros
   * @tparam P type of patch object
   * @tparam C type-level encoded configuration of patcher
   */
-class PatcherUsing[T, P, C <: PatcherCfg](val obj: T, val objPatch: P) {
+class PatcherUsing[T, P, C <: PatcherCfg](val obj: T, val objPatch: P) extends ScalaVersionSpecificPatcherUsing[T, P, C] {
 
   /** In case when both object to patch and patch value contain field
     * of type `Option[T]`, this option allows to treat `None` value in
@@ -43,10 +40,4 @@ class PatcherUsing[T, P, C <: PatcherCfg](val obj: T, val objPatch: P) {
     */
   def ignoreRedundantPatcherFields: PatcherUsing[T, P, IgnoreRedundantPatcherFields[C]] =
     this.asInstanceOf[PatcherUsing[T, P, IgnoreRedundantPatcherFields[C]]]
-
-  /** Applies configured patching in-place
-    *
-    * @return patched value
-    */
-  def patch: T = macro PatcherBlackboxMacros.patchImpl[T, P, C]
 }

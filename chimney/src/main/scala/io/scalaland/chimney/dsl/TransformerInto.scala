@@ -16,7 +16,7 @@ final class TransformerInto[From, To, C <: TransformerCfg, Flags <: TransformerF
     val source: From,
     val td: TransformerDefinition[From, To, C, Flags]
 ) extends FlagsDsl[Lambda[`F1 <: TransformerFlags` => TransformerInto[From, To, C, F1]], Flags]
-     with TransformerIntoPlatformSpecific[From, To, C, Flags] {
+     with ScalaVersionSpecificTransformerInto[From, To, C, Flags] {
 
   /** Lifts current transformation with provided type constructor `F`.
     *
