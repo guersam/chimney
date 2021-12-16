@@ -43,7 +43,7 @@ val settings =
       (CrossVersion.partialVersion(scalaVersion.value) match {
         case Some((2, 12)) => Seq(
           "-Xfuture",
-          "-Xsource:3",
+//          "-Xsource:3",
           "-Xexperimental",
           "-Yno-adapted-args",
           "-Ywarn-inaccessible",
@@ -55,10 +55,11 @@ val settings =
           "-Xlint:nullary-override"
         )
         case Some((2, 13)) => Seq(
-          "-Xsource:3",
+//          "-Xsource:3",
         )
         case Some((3, _)) => Seq(
           "-Ykind-projector",
+          "-Ykind-projector:underscores",
           "-Xmax-inlines", "64"
         )
         case _ => Seq.empty
