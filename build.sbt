@@ -3,16 +3,16 @@ import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 val versions = new {
   val scala212 = "2.12.15"
   val scala213 = "2.13.7"
+  val scala3 = "3.1.0"
 }
 
-val scala3Version = "3.1.0"
 
 
 val settings =
   Seq(
     version := "0.6.1",
-    scalaVersion := versions.scala213,
-    crossScalaVersions := Seq(versions.scala212, versions.scala213, scala3Version),
+    scalaVersion := versions.scala3,
+    crossScalaVersions := Seq(versions.scala212, versions.scala213, versions.scala3),
     scalacOptions ++= Seq(
 //      "-target:jvm-1.8",
       "-encoding", "UTF-8",
@@ -71,7 +71,7 @@ val settings =
 val scala3Settings = Seq(
   testFrameworks += new TestFramework("utest.runner.Framework"),
   version := "0.1.0",
-  scalaVersion := scala3Version,
+  scalaVersion := versions.scala3,
   scalacOptions ++= Seq(
     // "-Xtarget:1.8",
     "-encoding", "UTF-8",
@@ -89,13 +89,13 @@ val dependencies = Seq(
       "org.scala-lang.modules" %%% "scala-collection-compat" % "2.6.0",
       "com.lihaoyi" %%% "utest" % "0.7.10" % "test"
     ) ++
-    (CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, 12 | 13)) => Seq(
-        compilerPlugin("org.typelevel" % "kind-projector" % "0.13.2" cross CrossVersion.full),
-        "org.scala-lang" % "scala-reflect" % scalaVersion.value % "provided"
-      )
-      case _ => Seq.empty
-    })
+      (CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some((2, 12 | 13)) => Seq(
+          compilerPlugin("org.typelevel" % "kind-projector" % "0.13.2" cross CrossVersion.full),
+          "org.scala-lang" % "scala-reflect" % scalaVersion.value % "provided"
+        )
+        case _ => Seq.empty
+      })
   )
 )
 
@@ -136,12 +136,11 @@ lazy val chimneyCats = crossProject(JSPlatform, JVMPlatform)
     moduleName := "chimney-cats",
     name := "chimney-cats",
     description := "Chimney module for validated transformers support",
-    testFrameworks += new TestFramework("utest.runner.Framework"),
-    addCompilerPlugin("org.typelevel" % "kind-projector" % "0.13.2" cross CrossVersion.full)
+    testFrameworks += new TestFramework("utest.runner.Framework")
   )
   .settings(settings)
   .settings(publishSettings)
-  .settings(dependencies: _*)
+  .settings(dependencies)
   .settings(libraryDependencies += "org.typelevel" %%% "cats-core" % "2.6.1" % "provided")
 
 lazy val chimneyCatsJVM = chimneyCats.jvm
