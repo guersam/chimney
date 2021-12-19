@@ -1,8 +1,10 @@
 package io.scalaland.chimney
 
-import io.scalaland.chimney.dsl.*
+import internal.derived.TransformerDerive
+import internal.TransformerFlag
+import dsl.*
 
-import scala.language.experimental.macros
+import scala.compiletime.error
 
 private[chimney] trait ScalaVersionSpecificTransformer {
 
@@ -17,8 +19,10 @@ private[chimney] trait ScalaVersionSpecificTransformer {
     * @return
     *   [[io.scalaland.chimney.Transformer]] type class definition
     */
-  implicit def derive[From, To]: Transformer[From, To] =
-    ??? // macro TransformerBlackboxMacros.deriveTransformerImpl[From, To]
+  inline given derive[From, To]: Transformer[From, To] =
+    TransformerDerive.derived[From, To, EmptyTuple, TransformerFlag.DefaultValues *: EmptyTuple](
+      TransformerDefinition(Map.empty, Map.empty)
+    )
 
   /** Creates an empty [[io.scalaland.chimney.dsl.TransformerDefinition]] that
     * you can customize to derive [[io.scalaland.chimney.Transformer]].
