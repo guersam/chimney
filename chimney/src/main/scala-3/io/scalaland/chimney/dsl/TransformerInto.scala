@@ -94,7 +94,7 @@ final class TransformerInto[From, To, Config <: Tuple, Flags <: Tuple](
     * @param f function to calculate values of components that cannot be mapped automatically
     * @return [[io.scalaland.chimney.dsl.TransformerInto]]
     */
-  inline def withCoproductInstance[FF <: From, TT <: To](f: FF => TT): TransformerInto[From, To, EnableConfig[Config, TransformerCfg.CoproductInstance[FF, TT]], Flags] = 
+  inline def withCoproductInstance[FF <: From](f: FF => To): TransformerInto[From, To, EnableConfig[Config, TransformerCfg.CoproductInstance[FF, To]], Flags] = 
     TransformerInto(source, definition.withCoproductInstance(f))
 
   /** Use `f` to calculate the (missing) coproduct instance when mapping one coproduct into another.
@@ -112,8 +112,8 @@ final class TransformerInto[From, To, Config <: Tuple, Flags <: Tuple](
     * @param f function to calculate values of components that cannot be mapped automatically
     * @return [[io.scalaland.chimney.dsl.TransformerFInto]]
     */
-  transparent inline def withCoproductInstanceF[F[+_], FF <: From, TT <: To](f: FF => F[TT]) = 
-    lift[F].withCoproductInstanceF[FF, TT](f)
+  transparent inline def withCoproductInstanceF[F[+_], FF <: From](f: FF => F[To]) = 
+    lift[F].withCoproductInstanceF[FF](f)
 
   /**
    * For compatibilty with chimney for scala 2, transform defaults to looking-up existing instance of Transformer

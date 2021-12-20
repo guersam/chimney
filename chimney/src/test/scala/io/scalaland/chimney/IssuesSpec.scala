@@ -26,7 +26,6 @@ object IssuesSpec extends TestSuite {
   }
 
   val tests = Tests {
-
     "fix issue #19" - {
       case class NewEntity(name: String)
       case class Entity(id: Long, name: String, isDeleted: Boolean)

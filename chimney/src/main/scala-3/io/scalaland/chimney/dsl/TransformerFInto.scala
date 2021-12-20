@@ -84,7 +84,7 @@ final class TransformerFInto[F[+_], From, To, Config <: Tuple, Flags <: Tuple](
     * @param f function to calculate values of components that cannot be mapped automatically
     * @return [[io.scalaland.chimney.dsl.TransformerFInto]]
     */
-  inline def withCoproductInstance[FF <: From, TT <: To](f: FF => TT): TransformerFInto[F, From, To, EnableConfig[Config, TransformerCfg.CoproductInstance[FF, TT]], Flags] = 
+  inline def withCoproductInstance[FF <: From](f: FF => To): TransformerFInto[F, From, To, EnableConfig[Config, TransformerCfg.CoproductInstance[FF, To]], Flags] = 
     TransformerFInto(source, definition.withCoproductInstance(f))
 
   /** Use `f` to calculate the (missing) coproduct instance when mapping one coproduct into another.
@@ -102,7 +102,7 @@ final class TransformerFInto[F[+_], From, To, Config <: Tuple, Flags <: Tuple](
     * @param f function to calculate values of components that cannot be mapped automatically
     * @return [[io.scalaland.chimney.dsl.TransformerFDefinition]]
     */
-  inline def withCoproductInstanceF[FF <: From, TT <: To](f: FF => F[TT]): TransformerFInto[F, From, To, EnableConfig[Config, TransformerCfg.CoproductInstanceF[FF, TT]], Flags] = 
+  inline def withCoproductInstanceF[FF <: From](f: FF => F[To]): TransformerFInto[F, From, To, EnableConfig[Config, TransformerCfg.CoproductInstanceF[FF, To]], Flags] = 
     TransformerFInto(source, definition.withCoproductInstanceF(f))
   
   /**

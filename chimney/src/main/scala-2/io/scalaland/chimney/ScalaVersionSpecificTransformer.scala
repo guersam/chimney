@@ -1,5 +1,7 @@
 package io.scalaland.chimney
 
+import io.scalaland.chimney.dsl._
+import io.scalaland.chimney.internal._
 import io.scalaland.chimney.internal.macros.dsl.TransformerBlackboxMacros
 
 import scala.language.experimental.macros

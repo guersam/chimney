@@ -840,34 +840,35 @@ object DslFSpec extends TestSuite {
       }
     }
 
-    "support config type-aliases" - {
-      type VTransformer[A, B] =
-        io.scalaland.chimney.TransformerF[VTransformer.F, A, B]
+    // TODO
+    // "support config type-aliases" - {
+    //   type VTransformer[A, B] =
+    //     io.scalaland.chimney.TransformerF[VTransformer.F, A, B]
 
-      object VTransformer {
-        import io.scalaland.chimney.internal.{TransformerCfg, TransformerFlags}
+    //   object VTransformer {
+    //     import io.scalaland.chimney.internal.{TransformerCfg, TransformerFlags}
 
-        type F[+A] = Either[List[String], A]
-        type DefaultCfg = TransformerCfg.WrapperType[F, TransformerCfg.Empty]
-        type Definition[From, To] =
-          TransformerFDefinition[F, From, To, DefaultCfg, TransformerFlags.Default]
+    //     type F[+A] = Either[List[String], A]
+    //     type DefaultCfg = TransformerCfg.WrapperType[F, TransformerCfg.Empty]
+    //     type Definition[From, To] =
+    //       TransformerFDefinition[F, From, To, DefaultCfg, TransformerFlags.Default]
 
-        def define[From, To]: Definition[From, To] =
-          io.scalaland.chimney.TransformerF.define[F, From, To]
-      }
+    //     def define[From, To]: Definition[From, To] =
+    //       io.scalaland.chimney.TransformerF.define[F, From, To]
+    //   }
 
-      implicit val intParserEither: TransformerF[Either[List[String], +*], String, Int] =
-        _.parseInt.toEither("bad int")
+    //   implicit val intParserEither: TransformerF[Either[List[String], +*], String, Int] =
+    //     _.parseInt.toEither("bad int")
 
-      case class Foo(foo: String)
+    //   case class Foo(foo: String)
 
-      case class Bar(bar: Int)
+    //   case class Bar(bar: Int)
 
-      implicit val fooToBar: VTransformer[Foo, Bar] =
-        VTransformer.define[Foo, Bar].withFieldRenamed(_.foo, _.bar).buildTransformer
+    //   implicit val fooToBar: VTransformer[Foo, Bar] =
+    //     VTransformer.define[Foo, Bar].withFieldRenamed(_.foo, _.bar).buildTransformer
 
-      fooToBar.transform(Foo("1")) ==> Right(Bar(1))
-    }
+    //   fooToBar.transform(Foo("1")) ==> Right(Bar(1))
+    // }
 
     "support deriving wrapped transformer from pure" - {
       case class Foo(str: String)

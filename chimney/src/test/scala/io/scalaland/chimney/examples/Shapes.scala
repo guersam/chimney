@@ -44,14 +44,15 @@ package shapes5 {
   case class Point(x: Double, y: Double)
 
   sealed trait Shape
-
-  case class Triangle(p1: Point, p2: Point, p3: Point) extends Shape
-  case class Rectangle(p1: Point, p2: Point) extends Shape
-  case class Circle(center: Point, rad: Double) extends Shape
-
-  object Inner {
+  object Shape {
     case class Triangle(p1: Point, p2: Point, p3: Point) extends Shape
     case class Rectangle(p1: Point, p2: Point) extends Shape
     case class Circle(center: Point, rad: Double) extends Shape
+
+    object Inner {
+      case class Triangle(p1: Point, p2: Point, p3: Point) extends Shape
+      case class Rectangle(p1: Point, p2: Point) extends Shape
+      case class Circle(center: Point, rad: Double) extends Shape
+    }
   }
 }

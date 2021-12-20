@@ -95,7 +95,7 @@ final class TransformerFDefinition[F[+_], From, To, Config <: Tuple, Flags <: Tu
     * @param f function to calculate values of components that cannot be mapped automatically
     * @return [[io.scalaland.chimney.dsl.TransformerFDefinition]]
     */
-  inline def withCoproductInstance[FF <: From, TT <: To](f: FF => TT): TransformerFDefinition[F, From, To, EnableConfig[Config, TransformerCfg.CoproductInstance[FF, TT]], Flags] = 
+  inline def withCoproductInstance[FF <: From](f: FF => To): TransformerFDefinition[F, From, To, EnableConfig[Config, TransformerCfg.CoproductInstance[FF, To]], Flags] = 
     TransformerFDefinitionBuilder.withInstanceComputed(this)(f)
 
   /** Use `f` to calculate the (missing) coproduct instance when mapping one coproduct into another.
