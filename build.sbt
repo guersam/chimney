@@ -6,6 +6,8 @@ val versions = new {
   val scala3 = "3.1.0"
 }
 
+ThisBuild / scalafixScalaBinaryVersion :=
+  CrossVersion.binaryScalaVersion(scalaVersion.value)
 
 
 val settings =
