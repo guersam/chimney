@@ -439,10 +439,10 @@ object DslSpec extends TestSuite {
 
       "support automatically filling of scala.Unit" - {
         import `support automatically filling of scala.Unit`._
-// TODO
-//        Buzz("a").transformInto[NewBuzz] ==> NewBuzz("a", ())
-//        Buzz("a").transformInto[FooBuzz] ==> FooBuzz(())
-//        NewBuzz("a", null.asInstanceOf[Unit]).transformInto[FooBuzz] ==> FooBuzz(null.asInstanceOf[Unit])
+
+        Buzz("a").transformInto[NewBuzz] ==> NewBuzz("a", ())
+        Buzz("a").transformInto[FooBuzz] ==> FooBuzz(())
+        NewBuzz("a", null.asInstanceOf[Unit]).transformInto[FooBuzz] ==> FooBuzz(null.asInstanceOf[Unit])
 
         compileError("""Buzz("a").transformInto[ConflictingFooBuzz]""")
           .check(

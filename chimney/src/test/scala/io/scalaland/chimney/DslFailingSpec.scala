@@ -55,20 +55,6 @@ object DslFailingSpec extends TestSuite {
     "support common data types" - {
       import `support common data types`._
 
-      "support automatically filling of scala.Unit" - {
-        import `support automatically filling of scala.Unit`._
-        // TODO
-        //        Buzz("a").transformInto[NewBuzz] ==> NewBuzz("a", ())
-        //        Buzz("a").transformInto[FooBuzz] ==> FooBuzz(())
-        //        NewBuzz("a", null.asInstanceOf[Unit]).transformInto[FooBuzz] ==> FooBuzz(null.asInstanceOf[Unit])
-
-        compileError("""Buzz("a").transformInto[ConflictingFooBuzz]""")
-          .check(
-            "",
-            "value: scala.Unit - can't derive transformation from value: java.lang.String in source type io.scalaland.chimney.DslSpec.Buzz"
-          )
-      }
-
       "support scala.util.Either" - {
         //        Left(Foo("a")).transformInto[Either[Bar, Bar]] ==> Left(Bar("a"))
         //        Right(Foo("a")).transformInto[Either[Bar, Bar]] ==> Right(Bar("a"))

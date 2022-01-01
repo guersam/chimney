@@ -334,21 +334,24 @@ object DeriveProduct:
       case None => 
         inline extractByMethod[Flags, From, Field](config, from) match
           case Some(value) => onAccess(value)
-          case None => 
-            inline if constValue[HasAFlag[Flags, TransformerFlag.OptionDefaultsToNone]] then
-              inline erasedValue[Tpe] match
-                case _: Option[?] =>
+          case None =>
+            inline erasedValue[Tpe] match
+              case _: Option[?] =>
+                inline if constValue[HasAFlag[Flags, TransformerFlag.OptionDefaultsToNone]] then
                   onAccess(None)
-                case _ =>
+                else
                   MacroUtils.reportErrorAtPath[Path](
-                    constValue[Path], 
+                    constValue[Path],
                     MacroUtils.printfCompileTime["Unable to find default value in %s or method in %s for %s", (To, From, Field)]
                   )
-            else
-              MacroUtils.reportErrorAtPath[Path](
-                constValue[Path],
-                MacroUtils.printfCompileTime["Unable to find default value in %s or method in %s for %s", (To, From, Field)]
-              )
+
+              case () => onAccess(())
+
+              case _ =>
+                MacroUtils.reportErrorAtPath[Path](
+                  constValue[Path],
+                  MacroUtils.printfCompileTime["Unable to find default value in %s or method in %s for %s", (To, From, Field)]
+                )
   end specialExtractors
 
   private transparent inline def extractDefault[Flags <: Tuple, To, Field](inline config: TypeDeriveConfig[_, Flags, _]) =
