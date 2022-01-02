@@ -28,15 +28,31 @@ object SpecialDerive:
             })}.asInstanceOf[Transformer[From, To]]})
           case _ =>
             None
+
+      case '[Left[l, _]] =>
+        Type.of[To] match
+          case '[Either[tl, tr]] =>
+            Some('{${deriveSpecialK1Impl[Left[l, _], Either[tl, tr], l, tl, Flags, Path Concat "-\\/"](instance => '{left =>
+              Left(${instance}.transform(left.value))
+            })}.asInstanceOf[Transformer[From, To]]})
+
+      case '[Right[_, r]] =>
+        Type.of[To] match
+          case '[Either[tl, tr]] =>
+            Some('{${deriveSpecialK1Impl[Right[_, r], Either[tl, tr], r, tr, Flags, Path Concat "\\/-"](instance => '{right =>
+              Right(${instance}.transform(right.value))
+            })}.asInstanceOf[Transformer[From, To]]})
+
       case '[Either[l, r]] =>
         Type.of[To] match
           case '[Either[tl, tr]] =>
             Some(deriveSpecialK2Impl[Either[l, r], Either[tl, tr], l, r, tl, tr, Flags, Path Concat ".\\/"](
-              (lInstance, rInstance) => '{either =>
-                either.fold(l => Left(${lInstance}.transform(l)), r => Right(${rInstance}.transform(r)))
-            }).asInstanceOf[Expr[Transformer[From, To]]])
+              (lInstance, rInstance) =>
+                '{either => either.fold(l => Left(${lInstance}.transform(l)), r => Right(${rInstance}.transform(r)))}
+            ).asInstanceOf[Expr[Transformer[From, To]]])
           case _ =>
             None
+
       case '[Array[(k, v)]] =>
         Type.of[To] match
           case '[IterableOnce[(tk, tv)]] =>
@@ -257,7 +273,7 @@ object SpecialDerive:
     val elemTransformer1 = Expr.summon[Transformer[F1, T1]] match
       case Some(t) => t
       case None => '{TransformerDerive.deriveConfigured[F1, T1, Path](configOfAtPath[T1, Flags, Path](defaultDefinitionWithFlags))}
-    
+
     val elemTransformer2 = Expr.summon[Transformer[F2, T2]] match
       case Some(t) => t
       case None => '{TransformerDerive.deriveConfigured[F2, T2, Path](configOfAtPath[T2, Flags, Path](defaultDefinitionWithFlags))}

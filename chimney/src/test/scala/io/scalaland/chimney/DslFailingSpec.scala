@@ -52,17 +52,6 @@ object DslFailingSpec extends TestSuite {
       }
     }
 
-    "support common data types" - {
-      import `support common data types`._
-
-      "support scala.util.Either" - {
-        //        Left(Foo("a")).transformInto[Either[Bar, Bar]] ==> Left(Bar("a"))
-        //        Right(Foo("a")).transformInto[Either[Bar, Bar]] ==> Right(Bar("a"))
-        //        Left(Foo("a")).transformInto[Left[Bar, Bar]] ==> Left(Bar("a"))
-        //        Right(Foo("a")).transformInto[Right[Bar, Bar]] ==> Right(Bar("a"))
-      }
-    }
-
     "support with .enableUnsafeOption" - {
       implicit val stringToIntTransformer: Transformer[Int, String] = _.toString
 

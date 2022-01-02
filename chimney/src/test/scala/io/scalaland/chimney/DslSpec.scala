@@ -454,10 +454,10 @@ object DslSpec extends TestSuite {
       "support scala.util.Either" - {
         (Left(Foo("a")): Either[Foo, Foo]).transformInto[Either[Bar, Bar]] ==> Left(Bar("a"))
         (Right(Foo("a")): Either[Foo, Foo]).transformInto[Either[Bar, Bar]] ==> Right(Bar("a"))
-//        Left(Foo("a")).transformInto[Either[Bar, Bar]] ==> Left(Bar("a"))
-//        Right(Foo("a")).transformInto[Either[Bar, Bar]] ==> Right(Bar("a"))
-//        Left(Foo("a")).transformInto[Left[Bar, Bar]] ==> Left(Bar("a"))
-//        Right(Foo("a")).transformInto[Right[Bar, Bar]] ==> Right(Bar("a"))
+        Left(Foo("a")).transformInto[Either[Bar, Bar]] ==> Left(Bar("a"))
+        Right(Foo("a")).transformInto[Either[Bar, Bar]] ==> Right(Bar("a"))
+        Left(Foo("a")).transformInto[Left[Bar, Bar]] ==> Left(Bar("a"))
+        Right(Foo("a")).transformInto[Right[Bar, Bar]] ==> Right(Bar("a"))
         (Left("a"): Either[String, String]).transformInto[Either[String, String]] ==> Left("a")
         (Right("a"): Either[String, String]).transformInto[Either[String, String]] ==> Right("a")
       }
