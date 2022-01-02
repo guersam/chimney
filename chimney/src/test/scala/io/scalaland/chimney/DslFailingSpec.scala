@@ -9,28 +9,6 @@ object DslFailingSpec extends TestSuite {
 
   val tests = Tests {
 
-    "support different set of fields of source and target" - {
-      import `support different set of fields of source and target`._
-
-      "field is added to the target" - {
-
-        "use implicit transformer for option when .enableUnsafeOption" - {
-          import `use implicit transformer for option when .enableUnsafeOption`._
-
-          implicit val stringToIntTransformer: Transformer[Int, String] = _.toString
-
-          // TODO
-          //          "use transformer when .enableUnsafeOption" - {
-          //            Foobar(Some(1)).into[Foobar2].enableUnsafeOption.transform ==> Foobar2("1")
-          //          }
-          //
-          //          "use transformer when .disableUnsafeOption adn then .enableUnsafeOption" - {
-          //            Foobar(Some(1)).into[Foobar2].disableUnsafeOption.enableUnsafeOption.transform ==> Foobar2("1")
-          //          }
-        }
-      }
-    }
-
     "support value classes" - {
 
       import VCDomain1._
@@ -49,35 +27,6 @@ object DslFailingSpec extends TestSuite {
         //        "Batman".transformInto[UserName] ==> UserName("Batman")
         //        UserDTO("100", "abc").transformInto[User] ==>
         //          User("100", UserName("abc"))
-      }
-    }
-
-    "support with .enableUnsafeOption" - {
-      implicit val stringToIntTransformer: Transformer[Int, String] = _.toString
-
-      "use implicit transformer" - {
-        import `use implicit transformer`._
-
-        //        Foobar(Some(1)).into[Foobar2].enableUnsafeOption.transform ==> Foobar2("1")
-        //        NestedFoobar(Some(Foobar(Some(1)))).into[NestedFoobar2].enableUnsafeOption.transform ==> NestedFoobar2(
-        //          Foobar2("1")
-        //        )
-      }
-
-      "preserve option to option mapping" - {
-        import `preserve option to option mapping`._
-        // TODO
-        //        Foobar(Some(1), Some("foobar")).into[Foobar2].enableUnsafeOption.transform ==> Foobar2("1", Some("foobar"))
-        //        Foobar(Some(1), None).into[Foobar2].enableUnsafeOption.transform ==> Foobar2("1", None)
-      }
-
-      "transforming None leads to NoSuchElementException" - {
-        import `transforming None leads to NoSuchElementException`._
-
-        // TODO
-        //        intercept[NoSuchElementException] {
-        //          Foobar(None).into[Foobar2].enableUnsafeOption.transform
-        //        }
       }
     }
 
@@ -188,19 +137,6 @@ object DslFailingSpec extends TestSuite {
         //        (shapes4.Rectangle(shapes4.Point(2.0, 0.0), shapes4.Point(2.0, 2.0)): shapes4.Shape)
         //          .transformInto[shapes3.Shape] ==>
         //          shapes3.Rectangle(shapes3.Point(2.0, 0.0), shapes3.Point(2.0, 2.0))
-      }
-    }
-
-    "support polymorphic source/target objects and modifiers" - {
-      import Poly._
-
-      "automatically fill Unit parameters" - {
-        import `automatically fill Unit parameters`._
-
-        type UnitBar = Bar[Unit]
-        // TODO
-        //        Foo("test").transformInto[UnitBar] ==> Bar("test", ())
-        //        Foo("test").transformInto[Bar[Unit]] ==> Bar("test", ())
       }
     }
 

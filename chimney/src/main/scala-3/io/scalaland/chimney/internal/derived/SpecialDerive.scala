@@ -26,8 +26,16 @@ object SpecialDerive:
                 case Some(v) => Some(${instance}.transform(v))
                 case None => None
             })}.asInstanceOf[Transformer[From, To]]})
+
           case _ =>
-            None
+            Expr.summon[HasAFlag[Flags, TransformerFlag.UnsafeOption] =:= true] match {
+              case Some(_) =>
+                Some('{${deriveSpecialK1Impl[Option[a], To, a, To, Flags, Path Concat ".get"](instance => '{opt =>
+                  ${instance}.transform(opt.get)
+                })}.asInstanceOf[Transformer[From, To]]})
+              case _ =>
+                None
+            }
 
       case '[Left[l, _]] =>
         Type.of[To] match
@@ -61,6 +69,7 @@ object SpecialDerive:
             deriveIterableLikeK2[From, To, k, v, tk, tv, Flags, Path Concat ".[*]"]('{_.asInstanceOf[Array[(k, v)]].iterator})
           case _ =>
             None
+
       case '[Array[a]] =>
         Type.of[To] match
           case '[IterableOnce[b]] =>
@@ -69,6 +78,7 @@ object SpecialDerive:
             deriveIterableLike[From, To, a, b, Flags, Path Concat ".[*]"]('{_.asInstanceOf[Array[a]].iterator})
           case _ =>
             None
+
       case '[IArray[(k, v)]] =>
         Type.of[To] match
           case '[IterableOnce[(tk, tv)]] =>
@@ -77,6 +87,7 @@ object SpecialDerive:
             deriveIterableLikeK2[From, To, k, v, tk, tv, Flags, Path Concat ".[*]"]('{_.asInstanceOf[Array[(k, v)]].iterator})
           case _ =>
             None
+
       case '[IArray[a]] =>
         Type.of[To] match
           case '[IterableOnce[b]] =>
@@ -85,6 +96,7 @@ object SpecialDerive:
             deriveIterableLike[From, To, a, b, Flags, Path Concat ".[*]"]('{_.asInstanceOf[IArray[a]].iterator})
           case _ =>
             None
+
       case '[IterableOnce[(k, v)]] =>
         Type.of[To] match
           case '[IterableOnce[(tk, tv)]] =>
@@ -93,6 +105,7 @@ object SpecialDerive:
             deriveIterableLikeK2[From, To, k, v, tk, tv, Flags, Path Concat ".[*]"]('{_.asInstanceOf[IterableOnce[(k, v)]].iterator})
           case _ =>
             None
+
       case '[IterableOnce[a]] =>
         Type.of[To] match
           case '[IterableOnce[b]] =>
@@ -101,6 +114,7 @@ object SpecialDerive:
             deriveIterableLike[From, To, a, b, Flags, Path Concat ".[*]"]('{_.asInstanceOf[IterableOnce[a]].iterator})
           case _ =>
             None
+
       case _ =>
         Type.of[To] match
           case '[Option[to]] =>

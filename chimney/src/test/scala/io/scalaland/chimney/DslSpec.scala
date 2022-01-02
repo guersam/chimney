@@ -130,14 +130,13 @@ object DslSpec extends TestSuite {
 
           implicit val stringToIntTransformer: Transformer[Int, String] = _.toString
 
-// TODO
-//          "use transformer when .enableUnsafeOption" - {
-//            Foobar(Some(1)).into[Foobar2].enableUnsafeOption.transform ==> Foobar2("1")
-//          }
-//
-//          "use transformer when .disableUnsafeOption adn then .enableUnsafeOption" - {
-//            Foobar(Some(1)).into[Foobar2].disableUnsafeOption.enableUnsafeOption.transform ==> Foobar2("1")
-//          }
+          "use transformer when .enableUnsafeOption" - {
+            Foobar(Some(1)).into[Foobar2].enableUnsafeOption.transform ==> Foobar2("1")
+          }
+
+          "use transformer when .disableUnsafeOption adn then .enableUnsafeOption" - {
+            Foobar(Some(1)).into[Foobar2].disableUnsafeOption.enableUnsafeOption.transform ==> Foobar2("1")
+          }
         }
 
         "fill the field with provided generator function" - {
@@ -529,26 +528,25 @@ object DslSpec extends TestSuite {
       "use implicit transformer" - {
         import `use implicit transformer`._
 
-//        Foobar(Some(1)).into[Foobar2].enableUnsafeOption.transform ==> Foobar2("1")
-//        NestedFoobar(Some(Foobar(Some(1)))).into[NestedFoobar2].enableUnsafeOption.transform ==> NestedFoobar2(
-//          Foobar2("1")
-//        )
+        Foobar(Some(1)).into[Foobar2].enableUnsafeOption.transform ==> Foobar2("1")
+        NestedFoobar(Some(Foobar(Some(1)))).into[NestedFoobar2].enableUnsafeOption.transform ==> NestedFoobar2(
+          Foobar2("1")
+        )
       }
 
       "preserve option to option mapping" - {
         import `preserve option to option mapping`._
-// TODO
-//        Foobar(Some(1), Some("foobar")).into[Foobar2].enableUnsafeOption.transform ==> Foobar2("1", Some("foobar"))
-//        Foobar(Some(1), None).into[Foobar2].enableUnsafeOption.transform ==> Foobar2("1", None)
+
+        Foobar(Some(1), Some("foobar")).into[Foobar2].enableUnsafeOption.transform ==> Foobar2("1", Some("foobar"))
+        Foobar(Some(1), None).into[Foobar2].enableUnsafeOption.transform ==> Foobar2("1", None)
       }
 
       "transforming None leads to NoSuchElementException" - {
         import `transforming None leads to NoSuchElementException`._
 
-// TODO
-//        intercept[NoSuchElementException] {
-//          Foobar(None).into[Foobar2].enableUnsafeOption.transform
-//        }
+        intercept[NoSuchElementException] {
+          Foobar(None).into[Foobar2].enableUnsafeOption.transform
+        }
       }
 
       "transforming fixed None type does not compile" - {
@@ -821,9 +819,8 @@ object DslSpec extends TestSuite {
         import `automatically fill Unit parameters`._
 
         type UnitBar = Bar[Unit]
-// TODO
-//        Foo("test").transformInto[UnitBar] ==> Bar("test", ())
-//        Foo("test").transformInto[Bar[Unit]] ==> Bar("test", ())
+        Foo("test").transformInto[UnitBar] ==> Bar("test", ())
+        Foo("test").transformInto[Bar[Unit]] ==> Bar("test", ())
       }
     }
 
